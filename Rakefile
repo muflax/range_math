@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "range_math"
   gem.homepage = "http://github.com/muflax/range_math"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{do math on ranges}
+  gem.description = %Q{use ranges in math expression}
   gem.email = "mail@muflax.com"
   gem.authors = ["muflax"]
   # dependencies defined in Gemfile
