@@ -1,0 +1,1 @@
+Basic library to do math on ranges, i.e. (3..4) + 5 = (8..9) and so on.
