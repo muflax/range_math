@@ -47,4 +47,8 @@ class Range
   def average
     (self.begin + self.end) / 2.0
   end
+
+  def coerce(other)
+    return self, other
+  end    
 end
