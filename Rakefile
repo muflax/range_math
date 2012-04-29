@@ -1,53 +1,24 @@
-# encoding: utf-8
-
-require 'rubygems'
-require 'bundler'
-begin
-  Bundler.setup(:default, :development)
-rescue Bundler::BundlerError => e
-  $stderr.puts e.message
-  $stderr.puts "Run `bundle install` to install missing gems"
-  exit e.status_code
-end
-require 'rake'
-
-require 'jeweler'
-Jeweler::Tasks.new do |gem|
-  # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
-  gem.name = "range_math"
-  gem.homepage = "http://github.com/muflax/range_math"
-  gem.license = "MIT"
-  gem.summary = %Q{do math on ranges}
-  gem.description = %Q{use ranges in math expression}
-  gem.email = "mail@muflax.com"
-  gem.authors = ["muflax"]
-  # dependencies defined in Gemfile
-end
-Jeweler::RubygemsDotOrgTasks.new
-
-require 'rake/testtask'
-Rake::TestTask.new(:test) do |test|
-  test.libs << 'lib' << 'test'
-  test.pattern = 'test/**/test_*.rb'
-  test.verbose = true
+desc "open an irb session preloaded with this library"
+task :console do
+  sh "irb -Ilib -rrange_math"
 end
 
-require 'rcov/rcovtask'
-Rcov::RcovTask.new do |test|
-  test.libs << 'test'
-  test.pattern = 'test/**/test_*.rb'
-  test.verbose = true
-  test.rcov_opts << '--exclude "gems/*"'
+desc "build a gem from the gemspec"
+task :build do
+  sh "mkdir -p pkg"
+  sh "gem build range_math.gemspec"
+  sh "mv range_math-*.gem pkg/"
 end
 
-task :default => :test
-
-require 'rdoc/task'
-RDoc::Task.new do |rdoc|
-  version = File.exist?('VERSION') ? File.read('VERSION') : ""
-
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "range_math #{version}"
-  rdoc.rdoc_files.include('README*')
-  rdoc.rdoc_files.include('lib/**/*.rb')
+desc "clean pkg"
+task :clean do
+  sh "rm -f pkg/*"
 end
+
+
+desc "install a gem"
+task :install => [:clean, :build] do
+  sh "gem install --no-format-executable pkg/range_math-*.gem"
+end
+
+task :default => :install
