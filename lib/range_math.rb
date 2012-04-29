@@ -37,7 +37,13 @@ class Range
   end
 
   def coerce(other)
-    return self, other
+    if other.is_a? Range
+      return other, self
+    elsif other.is_a? Numeric
+      return (other..other), self
+    else
+      super
+    end
   end
 
   def pair_or_num operator, other
