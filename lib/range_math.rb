@@ -20,6 +20,14 @@ class Range
     pair_or_num :/, other.to_f
   end
 
+  def **(other)
+    pair_or_num :**, other
+  end
+
+  def %(other)
+    pair_or_num :%, other
+  end
+  
   def to_f
     (self.begin.to_f..self.end.to_f)
   end
