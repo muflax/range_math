@@ -5,43 +5,23 @@
 
 class Range
   def +(other)
-    if other.is_a? Range
-      (self.begin + other.begin)..(self.end + other.end)
-    elsif other.is_a?  Numeric
-      (self.begin + other)..(self.end + other)
-    else
-      raise NoMethodError
-    end
+    pair_or_num :+, other
   end
 
   def -(other)
-    if other.is_a? Range
-      (self.begin - other.begin)..(self.end - other.end)
-    elsif other.is_a?  Numeric
-      (self.begin - other)..(self.end - other)
-    else
-      raise NoMethodError
-    end
+    pair_or_num :-, other
   end
 
   def *(other)
-    if other.is_a? Range
-      (self.begin * other.begin)..(self.end * other.end)
-    elsif other.is_a?  Numeric
-      (self.begin * other)..(self.end * other)
-    else
-      raise NoMethodError
-    end
+    pair_or_num :*, other
   end
 
   def /(other)
-    if other.is_a? Range
-      (self.begin / other.begin.to_f)..(self.end / other.end.to_f)
-    elsif other.is_a?  Numeric
-      (self.begin / other.to_f)..(self.end / other.to_f)
-    else
-      raise NoMethodError
-    end
+    pair_or_num :/, other.to_f
+  end
+
+  def to_f
+    (self.begin.to_f..self.end.to_f)
   end
 
   def average
@@ -50,5 +30,29 @@ class Range
 
   def coerce(other)
     return self, other
-  end    
+  end
+
+  def pair_or_num operator, other
+    if other.is_a? Range
+      calc_pairs operator, other
+    elsif other.is_a? Numeric
+      calc_pairs operator, (other..other)
+    else
+      raise NoMethodError
+    end
+  end
+  
+  def calc_pairs operator, other
+    parts_x = [self.begin, self.end]
+    parts_y = [other.begin, other.end]
+    
+    results = []
+    parts_x.each do |x|
+      parts_y.each do |y|
+        results << x.send(operator, y)
+      end
+    end
+    
+    (results.min..results.max)
+  end
 end
