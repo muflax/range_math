@@ -32,6 +32,10 @@ class Range
     (self.begin.to_f..self.end.to_f)
   end
 
+  def to_i
+    (self.begin.to_i..self.end.to_i)
+  end
+  
   def average
     (self.begin + self.end) / 2.0
   end
