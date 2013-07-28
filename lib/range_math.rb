@@ -50,6 +50,8 @@ class Range
     end
   end
 
+  private
+  
   def pair_or_num operator, other
     if other.is_a? Range
       calc_pairs operator, other
