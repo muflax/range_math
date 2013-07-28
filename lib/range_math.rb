@@ -33,7 +33,7 @@ class Range
   end
 
   def to_i
-    (self.begin.to_i..self.end.to_i)
+    (self.begin.round..self.end.round)
   end
   
   def average
