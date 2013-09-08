@@ -1,0 +1,5 @@
+- output distribution as ASCII
+- fix rounding (range.set_round(1); all future results are then rounded like that)
+- think about overlapping ranges
+- make map etc. return ranges too
+- propose to merge some of this into main Ruby?
