@@ -35,6 +35,10 @@ class Range
   def to_i
     (self.begin.round..self.end.round)
   end
+
+  def round places=0
+    (self.begin.round(places)..self.end.round(places))
+  end
   
   def average
     (self.begin + self.end) / 2.0
