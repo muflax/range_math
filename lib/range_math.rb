@@ -4,79 +4,52 @@
 # License: GNU GPL 3 <http://www.gnu.org/copyleft/gpl.html>
 
 class Range
-  def +(other)
-    pair_or_num :+, other
-  end
+  def +(other) 	; pair_or_num :+, other     	; end
+  def -(other) 	; pair_or_num :-, other     	; end
+  def *(other) 	; pair_or_num :*, other     	; end
+  def /(other) 	; pair_or_num :/, other.to_f	; end
+  def **(other)	; pair_or_num :**, other    	; end
+  def %(other) 	; pair_or_num :%, other     	; end
 
-  def -(other)
-    pair_or_num :-, other
-  end
-
-  def *(other)
-    pair_or_num :*, other
-  end
-
-  def /(other)
-    pair_or_num :/, other.to_f
-  end
-
-  def **(other)
-    pair_or_num :**, other
-  end
-
-  def %(other)
-    pair_or_num :%, other
-  end
-  
-  def to_f
-    (self.begin.to_f..self.end.to_f)
-  end
-
-  def to_i
-    (self.begin.round..self.end.round)
-  end
+  def to_f	; (self.begin.to_f..self.end.to_f)  	; end
+  def to_i	; (self.begin.round..self.end.round)	; end
 
   def round places=0
     (self.begin.round(places)..self.end.round(places))
   end
-  
+
   def average
     (self.begin + self.end) / 2.0
   end
 
   def coerce(other)
-    if other.is_a? Range
-      return other, self
-    elsif other.is_a? Numeric
-      return (other..other), self
+    case other
+    when Range  	; return other, self
+    when Numeric	; return (other..other), self
     else
       super
     end
   end
 
   private
-  
+
   def pair_or_num operator, other
-    if other.is_a? Range
-      calc_pairs operator, other
-    elsif other.is_a? Numeric
-      calc_pairs operator, (other..other)
+    case other
+    when Range  	; calc_pairs operator, other
+    when Numeric	; calc_pairs operator, (other..other)
     else
       raise NoMethodError
     end
   end
-  
+
   def calc_pairs operator, other
-    parts_x = [self.begin, self.end]
-    parts_y = [other.begin, other.end]
-    
-    results = []
-    parts_x.each do |x|
-      parts_y.each do |y|
-        results << x.send(operator, y)
-      end
-    end
-    
+    results = [
+      self.begin	.send(operator,	other.begin),
+      self.begin	.send(operator,	other.end),
+      self.end  	.send(operator,	other.begin),
+      self.end  	.send(operator,	other.end),
+    ]
+
     (results.min..results.max)
   end
 end
